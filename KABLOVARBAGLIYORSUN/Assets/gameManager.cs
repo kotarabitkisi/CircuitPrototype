@@ -6,17 +6,19 @@ using UnityEngine;
 
 public class gameManager : MonoBehaviour
 {
+    
     public float leftTime;
     public GameObject OpenedPage;
     public GameObject[] pages;
     public Vector3 cameraPos1, cameraPos2;
     public float cameraScale1, cameraScale2;
     public Color noneColor;
-    public bool zoomed;
+    public bool zoomed,p1solved;
     public GameObject square;
     public TextMeshProUGUI Timetxt;
     private void Update()
     {
+       
         #region süredeðiþimi
         if (leftTime <= 0) { Timetxt.text = "0"; Lose(); }
         else { leftTime -= Time.deltaTime; Timetxt.text = leftTime.ToString("0"); }
@@ -52,6 +54,7 @@ public class gameManager : MonoBehaviour
     {
         zoomed = false;
         StartCoroutine(MoveCamera(cameraScale2, cameraPos2));
+        
         StartCoroutine(OpenPage(0));
     }
     public void Lose()
@@ -99,7 +102,7 @@ public class gameManager : MonoBehaviour
         #endregion
         OpenedPage.SetActive(false);
         OpenedPage = pages[id];
-        square.SetActive(id == 0);
+        square.SetActive(id == 0&&!p1solved);
     }
     public IEnumerator MoveCamera(float cameraScale, Vector3 pos)//kamerayý verilen koordinat ve scale haline getirme animasyonu
     {

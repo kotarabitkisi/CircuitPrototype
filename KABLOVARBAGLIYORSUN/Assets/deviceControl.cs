@@ -1,11 +1,15 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class deviceControl : MonoBehaviour
 {
+    public ValueControlPuzzle1 VCP;
+    public Button ControlBtn;
     public Vector3 firstPosition;
     public Transform firstParent;
     public GameObject ChosenDevice;
+    public GameObject[] valueChangeCanvas;
     public GameObject[] devices;
     public GameObject[] selectedDevicePlaces;
     public Vector3[] DeviceTransforms;
@@ -18,8 +22,6 @@ public class deviceControl : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(mousepos, Vector2.zero);
             if (hit.collider != null)
             {
-
-                print(hit.collider);
                 if (hit.collider.CompareTag("Device"))
                 {
                     firstPosition = hit.collider.transform.position;
@@ -85,7 +87,7 @@ public class deviceControl : MonoBehaviour
             }
 
         }
-        for (int i = 0; i < devices.Length; i++)
+        for (int i = 0; i < devices.Length - 2; i++)
         {
             if (devices[i] != selectedDevicePlaces[i].transform.GetChild(0).gameObject)
             {
@@ -99,11 +101,39 @@ public class deviceControl : MonoBehaviour
                 return;
             }
         }
+        if (!(devices[2] == selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[2] == selectedDevicePlaces[2].transform.GetChild(0).gameObject))
+        {
+            print("false");
+            for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
+            {
+                devices[j].transform.parent = transform;
+                devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
+            }
+            return;
+        }
+        if (!(devices[3] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[3].transform.GetChild(0).gameObject))
+        {
+            print("false");
+            for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
+            {
+                devices[j].transform.parent = transform;
+                devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
+            }
+            return;
+        }
+
         for (int i = 0; i < devices.Length; i++)//yanlýþ eþleþtirme bulmazsa boxcolliderlarý kapatarak bir daha dokunulmamasýný saðlar
         {
             //buraya sliderlarý aktif etme satýrý gerek
             devices[i].GetComponent<BoxCollider2D>().enabled = false;
         }
+
+        for (int i = 0; i < valueChangeCanvas.Length; i++)
+        {
+            valueChangeCanvas[i].SetActive(true);
+        }
+        ControlBtn.GetComponent<Button>().onClick.RemoveAllListeners();
+        ControlBtn.GetComponent<Button>().onClick.AddListener(VCP.ControlItsTrueOrNot);
         print("true");//for döngülerini birleþtirme hepsinin sýrasý önemli
     }
 }
