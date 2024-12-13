@@ -6,19 +6,19 @@ using UnityEngine;
 
 public class gameManager : MonoBehaviour
 {
-    
+
     public float leftTime;
     public GameObject OpenedPage;
     public GameObject[] pages;
     public Vector3 cameraPos1, cameraPos2;
     public float cameraScale1, cameraScale2;
     public Color noneColor;
-    public bool zoomed,p1solved;
+    public bool zoomed,p1PlacingSolved, p1SolvingSolved;
     public GameObject square;
     public TextMeshProUGUI Timetxt;
     private void Update()
     {
-       
+
         #region süredeðiþimi
         if (leftTime <= 0) { Timetxt.text = "0"; Lose(); }
         else { leftTime -= Time.deltaTime; Timetxt.text = leftTime.ToString("0"); }
@@ -54,7 +54,7 @@ public class gameManager : MonoBehaviour
     {
         zoomed = false;
         StartCoroutine(MoveCamera(cameraScale2, cameraPos2));
-        
+
         StartCoroutine(OpenPage(0));
     }
     public void Lose()
@@ -64,11 +64,11 @@ public class gameManager : MonoBehaviour
     public IEnumerator OpenPage(int id)
     {
         #region seçilen sayfanýn childlarýndaki SpriteRendererlara eriþme(varsa)
-        List<GameObject> pagesChild=new List<GameObject>(); GetAllChildObjectsRecursively(pages[id].transform, pagesChild);
+        List<GameObject> pagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(pages[id].transform, pagesChild);
         List<SpriteRenderer> pagesRenderer = new List<SpriteRenderer>();
         for (int i = 0; i < pagesChild.Count; i++)
         {
-            if (pagesChild[i].TryGetComponent(out SpriteRenderer a))
+            if (pagesChild[i].TryGetComponent(out SpriteRenderer c))
             {
                 pagesRenderer.Add(pagesChild[i].GetComponent<SpriteRenderer>());
             }
@@ -77,7 +77,7 @@ public class gameManager : MonoBehaviour
         List<SpriteRenderer> openedPagesRenderer = new List<SpriteRenderer>();
         for (int i = 0; i < openedPagesChild.Count; i++)
         {
-            if (openedPagesChild[i].TryGetComponent(out SpriteRenderer a))
+            if (openedPagesChild[i].TryGetComponent(out SpriteRenderer d))
             {
                 openedPagesRenderer.Add(openedPagesChild[i].GetComponent<SpriteRenderer>());
             }
@@ -85,9 +85,26 @@ public class gameManager : MonoBehaviour
         #endregion
         #region objelerinrenginideðiþtirme
         pages[id].SetActive(true);
+
+
+        if (OpenedPage.TryGetComponent(out SpriteRenderer a))
+        {
+            openedPagesRenderer.Add(a);
+
+
+        }
+        if (pages[id].TryGetComponent(out SpriteRenderer b))
+        {
+            pagesRenderer.Add(b);
+
+        }
+
+
+
+
         for (float i = 0; i < 101; i++)
         {
-            OpenedPage.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, noneColor, i / 100);
+            
             for (int j = 0; j < pagesRenderer.Count; j++)
             {
                 pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, i / 100);
@@ -96,13 +113,12 @@ public class gameManager : MonoBehaviour
             {
                 openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, i / 100);
             }
-            pages[id].GetComponent<SpriteRenderer>().color = Color.Lerp(noneColor, Color.white, i / 100);
             yield return new WaitForSecondsRealtime(0.01f);
         }
         #endregion
         OpenedPage.SetActive(false);
         OpenedPage = pages[id];
-        square.SetActive(id == 0&&!p1solved);
+        square.SetActive(id == 0 && !p1SolvingSolved);
     }
     public IEnumerator MoveCamera(float cameraScale, Vector3 pos)//kamerayý verilen koordinat ve scale haline getirme animasyonu
     {
