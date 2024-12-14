@@ -28,6 +28,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
     public GameObject DevicePlacingCheck;
 
 
+
     private void Start()
     {
         Z0 = new Complex(Z0Re, Z0Im);
@@ -42,6 +43,9 @@ public class ValueControlPuzzle1 : MonoBehaviour
         InputFieldL.text = L.ToString("F2");
         InputFieldC.text = C.ToString("F2");
         InputFieldG.text = G.ToString("F2");
+        float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
+        Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
+        Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
     }
     public void InputValueChanged()
     {
@@ -53,6 +57,9 @@ public class ValueControlPuzzle1 : MonoBehaviour
         CSlider.value = C;
         RSlider.value = R;
         GSlider.value = G;
+        float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
+        Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
+        Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
     }
 
     public IEnumerator ControlItsTrueOrNot()

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -121,16 +122,45 @@ public class deviceControl : MonoBehaviour
             }
 
         }
-        if (!(devices[0] == selectedDevicePlaces[0].transform.GetChild(0).gameObject || devices[0]== selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[0] == selectedDevicePlaces[2].transform.GetChild(0).gameObject)) {
-            print("false");
-            for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
-            {
-                devices[j].transform.parent = transform;
-                devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
-            }
-            return;
+        //if (!(devices[0] == selectedDevicePlaces[0].transform.GetChild(0).gameObject || devices[0]== selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[0] == selectedDevicePlaces[2].transform.GetChild(0).gameObject)) {
+        //    print("false");
+        //    for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
+        //    {
+        //        devices[j].transform.parent = transform;
+        //        devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
+        //    }
+        //    return;
+        //}
+        //else if (devices[1] != selectedDevicePlaces[1].transform.GetChild(0).gameObject)
+        //{
+        //    print("false");
+        //    for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
+        //    {
+        //        devices[j].transform.parent = transform;
+        //        devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
+        //    }
+        //    return;
+        //}
+        //else if (!(devices[2] == selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[2] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[3].transform.GetChild(0).gameObject))
+        //{
+        //    print("false");
+        //    for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
+        //    {
+        //        devices[j].transform.parent = transform;
+        //        devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
+        //    }
+        //    return;
+        //}
+        List<GameObject> deviceplaceschild = new List<GameObject>();
+        for (int i = 0; i < 4; i++)
+        {
+            deviceplaceschild.Add(selectedDevicePlaces[i].transform.GetChild(0).gameObject);
+            print(deviceplaceschild[i]);
         }
-        else if (devices[1] != selectedDevicePlaces[1].transform.GetChild(0).gameObject)
+        if (!(devices[0] == deviceplaceschild[0] || devices[0] == deviceplaceschild[2] || devices[0] == deviceplaceschild[3])
+            || !(devices[1] == deviceplaceschild[1])
+            || !(devices[2] == deviceplaceschild[2] || devices[2] == deviceplaceschild[3])
+            || !(devices[3] == deviceplaceschild[2] || devices[3] == deviceplaceschild[3]))
         {
             print("false");
             for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
@@ -140,16 +170,7 @@ public class deviceControl : MonoBehaviour
             }
             return;
         }
-        else if (!(devices[2] == selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[2] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[3].transform.GetChild(0).gameObject))
-        {
-            print("false");
-            for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
-            {
-                devices[j].transform.parent = transform;
-                devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
-            }
-            return;
-        }
+
 
         for (int i = 0; i < devices.Length; i++)//yanlýþ eþleþtirme bulmazsa boxcolliderlarý kapatarak bir daha dokunulmamasýný saðlar
         {
