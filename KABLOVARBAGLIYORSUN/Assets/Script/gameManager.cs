@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class gameManager : MonoBehaviour
     public Vector3 cameraPos1, cameraPos2;
     public float cameraScale1, cameraScale2;
     public Color noneColor;
-    public bool zoomed,p1PlacingSolved, p1SolvingSolved;
+    public bool zoomed, p1PlacingSolved, p1SolvingSolved;
     public GameObject square;
     public TextMeshProUGUI Timetxt;
     private void Update()
@@ -54,7 +55,6 @@ public class gameManager : MonoBehaviour
     {
         zoomed = false;
         StartCoroutine(MoveCamera(cameraScale2, cameraPos2));
-
         StartCoroutine(OpenPage(0));
     }
     public void Lose()
@@ -66,20 +66,40 @@ public class gameManager : MonoBehaviour
         #region seçilen sayfanýn childlarýndaki SpriteRendererlara eriþme(varsa)
         List<GameObject> pagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(pages[id].transform, pagesChild);
         List<SpriteRenderer> pagesRenderer = new List<SpriteRenderer>();
+        List<Image> pagesImage = new List<Image>();
+        List<TextMeshProUGUI> pagesText = new List<TextMeshProUGUI>();
         for (int i = 0; i < pagesChild.Count; i++)
         {
             if (pagesChild[i].TryGetComponent(out SpriteRenderer c))
             {
-                pagesRenderer.Add(pagesChild[i].GetComponent<SpriteRenderer>());
+                pagesRenderer.Add(c);
+            }
+            if (pagesChild[i].TryGetComponent(out TextMeshProUGUI d))
+            {
+                pagesText.Add(d);
+            }
+            if (pagesChild[i].TryGetComponent(out Image e))
+            {
+                pagesImage.Add(e);
             }
         }
         List<GameObject> openedPagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(OpenedPage.transform, openedPagesChild);
         List<SpriteRenderer> openedPagesRenderer = new List<SpriteRenderer>();
+        List<Image> openedPagesImage = new List<Image>();
+        List<TextMeshProUGUI> openedPagesText = new List<TextMeshProUGUI>();
         for (int i = 0; i < openedPagesChild.Count; i++)
         {
             if (openedPagesChild[i].TryGetComponent(out SpriteRenderer d))
             {
-                openedPagesRenderer.Add(openedPagesChild[i].GetComponent<SpriteRenderer>());
+                openedPagesRenderer.Add(d);
+            }
+            else if (openedPagesChild[i].TryGetComponent(out TextMeshProUGUI e))
+            {
+                openedPagesText.Add(e);
+            }
+            else if (openedPagesChild[i].TryGetComponent(out Image f))
+            {
+                openedPagesImage.Add(f);
             }
         }
         #endregion
@@ -90,13 +110,10 @@ public class gameManager : MonoBehaviour
         if (OpenedPage.TryGetComponent(out SpriteRenderer a))
         {
             openedPagesRenderer.Add(a);
-
-
         }
         if (pages[id].TryGetComponent(out SpriteRenderer b))
         {
             pagesRenderer.Add(b);
-
         }
 
 
@@ -104,7 +121,7 @@ public class gameManager : MonoBehaviour
 
         for (float i = 0; i < 101; i++)
         {
-            
+
             for (int j = 0; j < pagesRenderer.Count; j++)
             {
                 pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, i / 100);
@@ -112,6 +129,22 @@ public class gameManager : MonoBehaviour
             for (int j = 0; j < openedPagesRenderer.Count; j++)
             {
                 openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, i / 100);
+            }
+            for (int j = 0; j < pagesImage.Count; j++)
+            {
+                pagesImage[j].color = Color.Lerp(noneColor, Color.white, i / 100);
+            }
+            for (int j = 0; j < openedPagesImage.Count; j++)
+            {
+                openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, i / 100);
+            }
+            for (int j = 0; j < pagesText.Count; j++)
+            {
+                pagesText[j].color = Color.Lerp(noneColor, Color.black, i / 100);
+            }
+            for (int j = 0; j < openedPagesText.Count; j++)
+            {
+                openedPagesText[j].color = Color.Lerp(Color.black, noneColor, i / 100);
             }
             yield return new WaitForSecondsRealtime(0.01f);
         }

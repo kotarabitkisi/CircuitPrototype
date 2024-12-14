@@ -6,20 +6,27 @@ using UnityEngine.UI;
 
 public class ValueControlPuzzle1 : MonoBehaviour
 {
-    public float R, G;
-    public float L, C;
-    public float powOfL, powOfC, powOfG, powOfR, powOfFrequency;
-    public TMP_InputField InputFieldR, InputFieldG, InputFieldC, InputFieldL;
-    public TextMeshProUGUI Z0Text;
-    public Slider LSlider, CSlider,GSlider,RSlider;
-    public float Beta, Frequency;
+    public GameObject glowingSquare;
+    [Header("Devre deðerleri ve üsleri")]
     public Complex Z0;
     public float Z0Re, Z0Im;
-    public GameObject glowingSquare;
+    public float R, G;
+    public float L, C;
+    public float Beta, Frequency;
+   
+    public float powOfL, powOfC, powOfG, powOfR, powOfFrequency;
+    [Header("Devre objeleri")]
+    public TextMeshProUGUI Z0Text;
+    public TMP_InputField InputFieldR, InputFieldG, InputFieldC, InputFieldL;
+    
+    public Slider LSlider, CSlider, GSlider, RSlider;
+    [Header("Cevaplar")]
     public float diffWanted;
-
     public float AnsR, AnsG, AnsL, AnsC, AnsZ0;
+    [Header("Checkmarklar")]
     public GameObject Z0check;
+    public GameObject DevicePlacingCheck;
+
 
     private void Start()
     {
