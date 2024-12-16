@@ -22,7 +22,7 @@ public class deviceControl : MonoBehaviour
     void Update()
     {
         #region parcayadokunmaraycastkontrolu
-        if (Input.GetMouseButtonDown(0)&&!GM.p1PlacingSolved)
+        if (Input.GetMouseButtonDown(0) && !GM.p1PlacingSolved)
         {
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousepos, Vector2.zero);
@@ -44,7 +44,7 @@ public class deviceControl : MonoBehaviour
         }
         #endregion
         #region parcayýsürükleme
-        else if (Input.GetMouseButton(0) && ChosenDevice != null&&!GM.p1PlacingSolved)
+        else if (Input.GetMouseButton(0) && ChosenDevice != null && !GM.p1PlacingSolved)
         {
 
 
@@ -82,7 +82,7 @@ public class deviceControl : MonoBehaviour
                 selectedDevicePlaces[i].GetComponent<BoxCollider2D>().enabled = false;
             }
         }
-        else if(GM.p1PlacingSolved)
+        else if (GM.p1PlacingSolved)
         {
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousepos, Vector2.zero);
@@ -100,7 +100,7 @@ public class deviceControl : MonoBehaviour
                 for (int i = 0; i < valueChangeCanvas.Length; i++)
                 {
                     valueChangeCanvas[i].SetActive(false);
-                } 
+                }
             }
 
         }
@@ -159,7 +159,7 @@ public class deviceControl : MonoBehaviour
         }
         if (!(devices[0] == deviceplaceschild[0] || devices[0] == deviceplaceschild[2] || devices[0] == deviceplaceschild[3])
             || !(devices[1] == deviceplaceschild[1])
-            || !(devices[2] == deviceplaceschild[2] || devices[2] == deviceplaceschild[3])
+            || !(devices[2] == deviceplaceschild[0] || devices[2] == deviceplaceschild[2] || devices[2] == deviceplaceschild[3])
             || !(devices[3] == deviceplaceschild[2] || devices[3] == deviceplaceschild[3]))
         {
             print("false");
@@ -190,6 +190,7 @@ public class deviceControl : MonoBehaviour
         GM.p1PlacingSolved = true;
         VCP.DevicePlacingCheck.SetActive(true);
         print("true");//for döngülerini birleþtirme hepsinin sýrasý önemli
+        VCP.InitializeSliders(devices, selectedDevicePlaces);
     }
 
 }
