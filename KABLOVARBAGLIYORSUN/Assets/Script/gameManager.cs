@@ -11,15 +11,16 @@ public class gameManager : MonoBehaviour
     public float leftTime;
     public GameObject OpenedPage;
     public GameObject[] pages;
-    public Vector3 cameraPos1, cameraPos2;
-    public float cameraScale1, cameraScale2;
+    public Vector3[] cameraPos;
+    public float[] cameraScale;
     public Color noneColor;
     public bool zoomed, p1PlacingSolved, p1SolvingSolved;
-    public GameObject square;
+    public int puzzNum;
+    public GameObject[] squares;
     public TextMeshProUGUI Timetxt;
     private void Update()
     {
-
+        
         #region süredeðiþimi
         if (leftTime <= 0) { Timetxt.text = "0"; Lose(); }
         else { leftTime -= Time.deltaTime; Timetxt.text = leftTime.ToString("0"); }
@@ -33,14 +34,15 @@ public class gameManager : MonoBehaviour
             {
                 if (hit.collider.CompareTag("ZoomSquare"))
                 {
+                   
                     if (!zoomed)
                     {
                         zoomed = true;
-                        StartCoroutine(MoveCamera(cameraScale1, cameraPos1));
-                        StartCoroutine(OpenPage(1));
-                        square.SetActive(false);
+                        StartCoroutine(MoveCamera(cameraScale[puzzNum], cameraPos[puzzNum]));
+                        StartCoroutine(OpenPage(puzzNum));
                     }
                 }
+
             }//ne olur ne olmaz diye ifleri ayrý býraktým lütfen dokunmayýn
         }
         #endregion
@@ -54,7 +56,7 @@ public class gameManager : MonoBehaviour
     public void CloseBtnPressed()
     {
         zoomed = false;
-        StartCoroutine(MoveCamera(cameraScale2, cameraPos2));
+        StartCoroutine(MoveCamera(cameraScale[0], cameraPos[0]));
         StartCoroutine(OpenPage(0));
     }
     public void Lose()
@@ -63,6 +65,10 @@ public class gameManager : MonoBehaviour
     }
     public IEnumerator OpenPage(int id)
     {
+        for (int i = 0; i < squares.Length; i++)
+        {
+            squares[i].GetComponent<colorChanging>().enabled = false;
+        }
         #region seçilen sayfanýn childlarýndaki SpriteRendererlara eriþme(varsa)
         List<GameObject> pagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(pages[id].transform, pagesChild);
         List<SpriteRenderer> pagesRenderer = new List<SpriteRenderer>();
@@ -148,10 +154,18 @@ public class gameManager : MonoBehaviour
             }
             yield return new WaitForSecondsRealtime(0.01f);
         }
+        for (int i = 0; i < squares.Length; i++)
+        {
+            squares[i].GetComponent<colorChanging>().enabled = true;
+        }
         #endregion
         OpenedPage.SetActive(false);
         OpenedPage = pages[id];
-        square.SetActive(id == 0 && !p1SolvingSolved);
+        for (int i = 0; i < squares.Length; i++)
+        {
+            squares[id].SetActive(id == i);
+        }
+        
     }
     public IEnumerator MoveCamera(float cameraScale, Vector3 pos)//kamerayý verilen koordinat ve scale haline getirme animasyonu
     {

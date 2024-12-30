@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Numerics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +10,12 @@ public class ValueControlPuzzle1 : MonoBehaviour
     public GameObject glowingSquare;
     [Header("Devre deðerleri ve üsleri")]
     public Complex Z0;
-    public float Z0Re, Z0Im;
+    public double Z0Re, Z0Im;
     public float R, G;
     public float L, C;
     public float Beta, Frequency;
-
     public float powOfL, powOfC, powOfG, powOfR, powOfFrequency;
+    public gameManager gameManager; 
     [Header("Devre objeleri")]
     public TextMeshProUGUI Z0Text;
     public TMP_InputField InputFieldR, InputFieldG, InputFieldC, InputFieldL;
@@ -22,28 +23,28 @@ public class ValueControlPuzzle1 : MonoBehaviour
     [Header("Cevaplar")]
     public float diffWanted;
     public float AnsR, AnsG, AnsL, AnsC, AnsZ0;
+    public bool[] ControlAns;//0:R 1:G 2:L 3:C 4:Z0
     [Header("Checkmarklar")]
     public GameObject Z0check;
     public GameObject DevicePlacingCheck;
+    
     public void InitializeSliders(GameObject[] Devices, GameObject[] DevicePlaces)//düzenlenecek
     {
         RSlider = DevicePlaces[0].transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Slider>();
+        InputFieldR =  DevicePlaces[0].transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_InputField>();
         DevicePlaces[0].transform.GetChild(0).GetChild(2).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "R'";
+
         if (Devices[3] != DevicePlaces[2].transform.GetChild(0).gameObject)
         {
             GSlider = DevicePlaces[2].transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Slider>();
             DevicePlaces[2].transform.GetChild(0).GetChild(2).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "G'";
+            InputFieldG = DevicePlaces[2].transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_InputField>();
 
         }
         else { GSlider = DevicePlaces[3].transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Slider>();
             DevicePlaces[3].transform.GetChild(0).GetChild(2).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "G'";
+            InputFieldG = DevicePlaces[3].transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_InputField>();
         }
-    }
-
-
-    private void Start()
-    {
-        Z0 = new Complex(Z0Re, Z0Im);
     }
     public void SliderValueChanged()
     {
@@ -58,6 +59,8 @@ public class ValueControlPuzzle1 : MonoBehaviour
         float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
         Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
         Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
+        Z0Re = Z0.Real;
+        Z0Im = Z0.Imaginary;
     }
     public void InputValueChanged()
     {
@@ -69,9 +72,12 @@ public class ValueControlPuzzle1 : MonoBehaviour
         CSlider.value = C;
         RSlider.value = R;
         GSlider.value = G;
+       
         float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
         Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
         Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
+        Z0Re = Z0.Real;
+        Z0Im = Z0.Imaginary;
     }
 
     public IEnumerator ControlItsTrueOrNot()
@@ -80,7 +86,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
         double diffC = Mathf.Abs(C - AnsC);
         double diffL = Mathf.Abs(L - AnsL);
         Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
-        Complex diffZ0 = Complex.Abs(Z0 - AnsZ0);
+        Complex diffZ0 = Complex.Abs(Z0.Real - AnsZ0);
         bool istrueC = diffC <= diffWanted;
         bool istrueL = diffL <= diffWanted;
         bool istrueZ0 = diffZ0.Real <= diffWanted && diffZ0.Imaginary <= diffWanted;
@@ -93,7 +99,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
 
 
 
-        if (istrueC && istrueL && istrueZ0) { Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); GetComponent<gameManager>().p1SolvingSolved = true; GetComponent<gameManager>().CloseBtnPressed(); }
+        if ((istrueC || !ControlAns[3]) && (istrueL || !ControlAns[2]) && (istrueZ0 || !ControlAns[4])) { gameManager.squares[0].SetActive(false); gameManager.squares[1].SetActive(true); Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); gameManager.p1SolvingSolved = true; gameManager.puzzNum=2; gameManager.CloseBtnPressed(); }
         else { print("Z0diff= " + diffZ0 + "\n Ldiff= " + diffL + "\nCdiff = " + diffC); }
     }
     public Complex SolveZ0(float G, float C, float L, float R, float frequency)
