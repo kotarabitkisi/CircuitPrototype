@@ -122,35 +122,6 @@ public class deviceControl : MonoBehaviour
             }
 
         }
-        //if (!(devices[0] == selectedDevicePlaces[0].transform.GetChild(0).gameObject || devices[0]== selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[0] == selectedDevicePlaces[2].transform.GetChild(0).gameObject)) {
-        //    print("false");
-        //    for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
-        //    {
-        //        devices[j].transform.parent = transform;
-        //        devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
-        //    }
-        //    return;
-        //}
-        //else if (devices[1] != selectedDevicePlaces[1].transform.GetChild(0).gameObject)
-        //{
-        //    print("false");
-        //    for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
-        //    {
-        //        devices[j].transform.parent = transform;
-        //        devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
-        //    }
-        //    return;
-        //}
-        //else if (!(devices[2] == selectedDevicePlaces[3].transform.GetChild(0).gameObject || devices[2] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[2].transform.GetChild(0).gameObject || devices[3] == selectedDevicePlaces[3].transform.GetChild(0).gameObject))
-        //{
-        //    print("false");
-        //    for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
-        //    {
-        //        devices[j].transform.parent = transform;
-        //        devices[j].transform.DOLocalMove(DeviceTransforms[j], 0.5f).SetEase(Ease.Linear);
-        //    }
-        //    return;
-        //}
         List<GameObject> deviceplaceschild = new List<GameObject>();
         for (int i = 0; i < 4; i++)
         {

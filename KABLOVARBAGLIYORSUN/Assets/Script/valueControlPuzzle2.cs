@@ -1,10 +1,12 @@
 using System.Numerics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class valueControlPuzzle2 : MonoBehaviour
 {
+    public GameObject[] notePages;
     public double CL, RL, frequency, Z0;
     public float powofCL, powofRL, powofFrequency;
     public double Magnitude, Phase;
@@ -53,7 +55,8 @@ public class valueControlPuzzle2 : MonoBehaviour
     {
         RL = rlSlider.value;
         CL = clSlider.value;
-
+        rlInputField.text=RL.ToString("F2");
+        clInputField.text = CL.ToString("F2");
         double Hzfrequency = frequency * Mathf.Pow(10, powofFrequency);
 
         (Magnitude, Phase) = SolveReflectionCoefficient(RL * Mathf.Pow(10, powofRL), CL * Mathf.Pow(10, powofCL), Z0, frequency * Mathf.Pow(10, powofFrequency));
@@ -80,17 +83,17 @@ public class valueControlPuzzle2 : MonoBehaviour
         float diffmagnitude = (float)(AnsMagnitude - magnitude);
         if (Mathf.Abs(diffphase) <= diffWanted && Mathf.Abs(diffmagnitude) <= diffWanted)
         {
-            print("true"); GameManager.squares[1].SetActive(false); GameManager.squares[2].SetActive(true); GameManager.puzzNum = 3; GameManager.CloseBtnPressed();
+            print("true");  GameManager.puzzNum = 3; GameManager.CloseBtnPressed();
         }
         else { print("false" + "\ndiffphase= " + diffphase.ToString("F2") + "\ndiffmagnitude= " + diffmagnitude.ToString("F2")); }
 
-
-
-
-
-
-
-
-
+    }
+    public void OpenNote(int a)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            notePages[i].SetActive(false);
+        }
+        notePages[a].SetActive(true);
     }
 }

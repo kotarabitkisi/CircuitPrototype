@@ -123,37 +123,65 @@ public class gameManager : MonoBehaviour
         }
 
 
+        float duration = 1f; // 1 saniye
+        float elapsed = 0f;
 
-
-        for (float i = 0; i < 101; i++)
+        while (elapsed < duration)
         {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration; // Ýlerleme yüzdesi
 
             for (int j = 0; j < pagesRenderer.Count; j++)
-            {
-                pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, i / 100);
-            }
+                pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, t);
+
             for (int j = 0; j < openedPagesRenderer.Count; j++)
-            {
-                openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, i / 100);
-            }
+                openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, t);
+
             for (int j = 0; j < pagesImage.Count; j++)
-            {
-                pagesImage[j].color = Color.Lerp(noneColor, Color.white, i / 100);
-            }
+                pagesImage[j].color = Color.Lerp(noneColor, Color.white, t);
+
             for (int j = 0; j < openedPagesImage.Count; j++)
-            {
-                openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, i / 100);
-            }
+                openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, t);
+
             for (int j = 0; j < pagesText.Count; j++)
-            {
-                pagesText[j].color = Color.Lerp(noneColor, Color.black, i / 100);
-            }
+                pagesText[j].color = Color.Lerp(noneColor, Color.black, t);
+
             for (int j = 0; j < openedPagesText.Count; j++)
-            {
-                openedPagesText[j].color = Color.Lerp(Color.black, noneColor, i / 100);
-            }
-            yield return new WaitForSecondsRealtime(0.01f);
+                openedPagesText[j].color = Color.Lerp(Color.black, noneColor, t);
+
+            yield return null; // Bir sonraki kareyi bekle
         }
+
+
+        //for (float i = 0; i < 101; i++)
+        //{
+
+        //    for (int j = 0; j < pagesRenderer.Count; j++)
+        //    {
+        //        pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, i / 100);
+        //    }
+        //    for (int j = 0; j < openedPagesRenderer.Count; j++)
+        //    {
+        //        openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, i / 100);
+        //    }
+        //    for (int j = 0; j < pagesImage.Count; j++)
+        //    {
+        //        pagesImage[j].color = Color.Lerp(noneColor, Color.white, i / 100);
+        //    }
+        //    for (int j = 0; j < openedPagesImage.Count; j++)
+        //    {
+        //        openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, i / 100);
+        //    }
+        //    for (int j = 0; j < pagesText.Count; j++)
+        //    {
+        //        pagesText[j].color = Color.Lerp(noneColor, Color.black, i / 100);
+        //    }
+        //    for (int j = 0; j < openedPagesText.Count; j++)
+        //    {
+        //        openedPagesText[j].color = Color.Lerp(Color.black, noneColor, i / 100);
+        //    }
+        //    yield return new WaitForSecondsRealtime(0.01f);
+        //}
         for (int i = 0; i < squares.Length; i++)
         {
             squares[i].GetComponent<colorChanging>().enabled = true;
@@ -163,7 +191,7 @@ public class gameManager : MonoBehaviour
         OpenedPage = pages[id];
         for (int i = 0; i < squares.Length; i++)
         {
-            squares[id].SetActive(id == i);
+            squares[i].SetActive(i == puzzNum-1&&id==0);
         }
         
     }

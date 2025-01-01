@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class ValueControlPuzzle1 : MonoBehaviour
 {
     public GameObject glowingSquare;
+    public GameObject[] notePages;
     [Header("Devre deðerleri ve üsleri")]
     public Complex Z0;
     public double Z0Re, Z0Im;
@@ -79,7 +80,13 @@ public class ValueControlPuzzle1 : MonoBehaviour
         Z0Re = Z0.Real;
         Z0Im = Z0.Imaginary;
     }
-
+    public void OpenNote(int a) {
+        for (int i = 0; i < 3; i++)
+        {
+            notePages[i].SetActive(false);
+        }
+        notePages[a].SetActive(true);
+    }
     public IEnumerator ControlItsTrueOrNot()
     {
         float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
@@ -99,7 +106,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
 
 
 
-        if ((istrueC || !ControlAns[3]) && (istrueL || !ControlAns[2]) && (istrueZ0 || !ControlAns[4])) { gameManager.squares[0].SetActive(false); gameManager.squares[1].SetActive(true); Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); gameManager.p1SolvingSolved = true; gameManager.puzzNum=2; gameManager.CloseBtnPressed(); }
+        if ((istrueC || !ControlAns[3]) && (istrueL || !ControlAns[2]) && (istrueZ0 || !ControlAns[4])) {  Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); gameManager.p1SolvingSolved = true; gameManager.puzzNum=2; gameManager.CloseBtnPressed(); }
         else { print("Z0diff= " + diffZ0 + "\n Ldiff= " + diffL + "\nCdiff = " + diffC); }
     }
     public Complex SolveZ0(float G, float C, float L, float R, float frequency)
