@@ -18,9 +18,16 @@ public class gameManager : MonoBehaviour
     public int puzzNum;
     public GameObject[] squares;
     public TextMeshProUGUI Timetxt;
+    [Header("LastPuzzle")]
+    public bool LastPuzzStarted;
+    public GameObject LastPuzzleCanvas;
     private void Update()
     {
-        
+        if (!LastPuzzStarted && puzzNum == 3)
+        {
+            LastPuzzStarted = true;
+            Invoke("LastPuzzleStart", 2);
+        }
         #region süredeðiþimi
         if (leftTime <= 0) { Timetxt.text = "0"; Lose(); }
         else { leftTime -= Time.deltaTime; Timetxt.text = leftTime.ToString("0"); }
@@ -62,6 +69,11 @@ public class gameManager : MonoBehaviour
     public void Lose()
     {
         print("Lose");
+    }
+    public void LastPuzzleStart()
+    {
+        StartCoroutine(MoveCamera(5, new Vector3(1.5f, -1, -10)));
+        LastPuzzleCanvas.SetActive(true);
     }
     public IEnumerator OpenPage(int id)
     {

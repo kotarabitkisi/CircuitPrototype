@@ -128,10 +128,7 @@ public class deviceControl : MonoBehaviour
             deviceplaceschild.Add(selectedDevicePlaces[i].transform.GetChild(0).gameObject);
             print(deviceplaceschild[i]);
         }
-        if (!(devices[0] == deviceplaceschild[0] || devices[0] == deviceplaceschild[2] || devices[0] == deviceplaceschild[3])
-            || !(devices[1] == deviceplaceschild[1])
-            || !(devices[2] == deviceplaceschild[0] || devices[2] == deviceplaceschild[2] || devices[2] == deviceplaceschild[3])
-            || !(devices[3] == deviceplaceschild[2] || devices[3] == deviceplaceschild[3]))
+        if (!(devices[1] == deviceplaceschild[1]|| devices[1] == deviceplaceschild[0]) || !(devices[3] == deviceplaceschild[2] || devices[3] == deviceplaceschild[3]))
         {
             print("false");
             for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
@@ -149,7 +146,7 @@ public class deviceControl : MonoBehaviour
             devices[i].GetComponent<BoxCollider2D>().enabled = false;
         }
         ControlBtn.GetComponent<Button>().onClick.RemoveAllListeners();
-        ControlBtn.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(VCP.ControlItsTrueOrNot()));
+        ControlBtn.GetComponent<Button>().onClick.AddListener(() => VCP.ControlItsTrueOrNot());
         for (int i = 0; i < selectedDevicePlaces.Length; i++)
         {
             selectedDevicePlaces[i].GetComponent<BoxCollider2D>().enabled = false;

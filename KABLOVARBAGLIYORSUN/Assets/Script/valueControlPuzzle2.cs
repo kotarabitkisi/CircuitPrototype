@@ -6,18 +6,33 @@ using UnityEngine.UI;
 
 public class valueControlPuzzle2 : MonoBehaviour
 {
+
+    public gameManager GameManager;
+    public ValueControlPuzzle1 VCP;
+    [Header("GameObjects")]
     public GameObject[] notePages;
-    public double CL, RL, frequency, Z0;
-    public float powofCL, powofRL, powofFrequency;
-    public double Magnitude, Phase;
-    public Slider clSlider, rlSlider;
-    public TMP_InputField clInputField, rlInputField;
-    public double AnsMagnitude, AnsPhase;
-    public TextMeshProUGUI MagnitudeText, PhaseText;
-    public double diffWanted;
     public GameObject[] valueChangeCanvas;
     public GameObject[] devices;
-    public gameManager GameManager;
+    [Header("Sliderlar ve Textler")]
+
+    public Slider clSlider;
+    public Slider rlSlider;
+    public TMP_InputField clInputField, rlInputField;
+    public TextMeshProUGUI MagnitudeText, PhaseText;
+    [Header("Parametreler")]
+    public double CL;
+    public double RL, frequency, Z0;
+    public float powofCL, powofRL, powofFrequency;
+    public double Magnitude, Phase;
+    [Header("Cevap Parametreleri")]
+    public double diffWanted;
+    public double AnsMagnitude, AnsPhase;
+    
+
+    private void OnEnable()
+    {
+        Z0=VCP.AnsZ0;
+    }
     private void Update()
     {
         UnityEngine.Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -41,7 +56,7 @@ public class valueControlPuzzle2 : MonoBehaviour
     }
     public (double Magnitude, double Phase) SolveReflectionCoefficient(double RL, double CL, Complex Z0, double frequency)
     {
-        Complex ZL = new Complex(RL, -1 / (2 * Mathf.PI * frequency * CL));
+        Complex ZL = SolveZL(RL,CL,frequency);
 
         Complex Z0Complex = new Complex(Z0.Real, 0);
         Complex Gamma = (ZL - Z0Complex) / (ZL + Z0Complex);
@@ -50,6 +65,10 @@ public class valueControlPuzzle2 : MonoBehaviour
         double magnitude = Gamma.Magnitude;
         double phase = Gamma.Phase * (180 / Mathf.PI);  // Radyan cinsinden dereceye çevirme
         return (magnitude, phase);
+    }
+    public Complex SolveZL(double RL,double CL,double frequency)
+    {
+        return new Complex(RL, -1 / (2 * Mathf.PI * frequency * CL));
     }
     public void SliderValueChanged()
     {
