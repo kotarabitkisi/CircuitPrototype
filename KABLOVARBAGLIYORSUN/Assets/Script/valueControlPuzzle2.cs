@@ -11,6 +11,7 @@ public class valueControlPuzzle2 : MonoBehaviour
     public ValueControlPuzzle1 VCP;
     [Header("GameObjects")]
     public GameObject[] notePages;
+    public GameObject[] noteButton;
     public GameObject[] valueChangeCanvas;
     public GameObject[] devices;
     [Header("Sliderlar ve Textler")]
@@ -114,7 +115,10 @@ public class valueControlPuzzle2 : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             notePages[i].SetActive(false);
+            RectTransform ttransform = noteButton[i].GetComponent<RectTransform>();
+            ttransform.position = new UnityEngine.Vector3(ttransform.position.x, 900, ttransform.position.z);
         }
+        noteButton[a].GetComponent<RectTransform>().position = new UnityEngine.Vector3(noteButton[a].GetComponent<RectTransform>().position.x, 915, noteButton[a].GetComponent<RectTransform>().position.z);
         notePages[a].SetActive(true);
     }
 }

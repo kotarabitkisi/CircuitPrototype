@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
-
+    public GameObject[] AllFormulaPages;
+    public GameObject LosePanel;
     public float leftTime;
     public GameObject OpenedPage;
     public GameObject[] pages;
@@ -41,7 +42,7 @@ public class gameManager : MonoBehaviour
             {
                 if (hit.collider.CompareTag("ZoomSquare"))
                 {
-                   
+
                     if (!zoomed)
                     {
                         zoomed = true;
@@ -68,7 +69,7 @@ public class gameManager : MonoBehaviour
     }
     public void Lose()
     {
-        print("Lose");
+        LosePanel.SetActive(true);
     }
     public void LastPuzzleStart()
     {
@@ -203,9 +204,9 @@ public class gameManager : MonoBehaviour
         OpenedPage = pages[id];
         for (int i = 0; i < squares.Length; i++)
         {
-            squares[i].SetActive(i == puzzNum-1&&id==0);
+            squares[i].SetActive(i == puzzNum - 1 && id == 0);
         }
-        
+
     }
     public IEnumerator MoveCamera(float cameraScale, Vector3 pos)//kamerayý verilen koordinat ve scale haline getirme animasyonu
     {
@@ -227,6 +228,22 @@ public class gameManager : MonoBehaviour
         {
             childList.Add(child.gameObject); // Þu anki child'ý listeye ekle
             GetAllChildObjectsRecursively(child, childList); // Alt child'larý da tara
+        }
+    }
+
+    public void openFormula(GameObject FormulaPage)
+    {
+        CloseAllFormulas();
+        if (FormulaPage != null)
+        {
+            FormulaPage.SetActive(true);
+        }
+    }
+    public void CloseAllFormulas()
+    {
+        for (int i = 0; i < AllFormulaPages.Length; i++)
+        {
+            AllFormulaPages[i].SetActive(false);
         }
     }
 }

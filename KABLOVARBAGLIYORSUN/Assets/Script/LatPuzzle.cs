@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class LatPuzzle : MonoBehaviour
 {
     public GameObject[] notePages;
+    public GameObject[] noteButton;
     public Complex ZL, Z0;
     public float Multiple, offset, Ycoor;
     public GameObject Left, Right;
+    public GameObject WinPanel;
     public Slider[] Sliders;
     public TextMeshProUGUI Zintext;
     public TMP_InputField Field;
@@ -32,7 +34,10 @@ public class LatPuzzle : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             notePages[i].SetActive(false);
+            RectTransform ttransform = noteButton[i].GetComponent<RectTransform>();
+            ttransform.position = new UnityEngine.Vector3(ttransform.position.x, 900, ttransform.position.z);
         }
+        noteButton[a].GetComponent<RectTransform>().position = new UnityEngine.Vector3(noteButton[a].GetComponent<RectTransform>().position.x, 915, noteButton[a].GetComponent<RectTransform>().position.z);
         notePages[a].SetActive(true);
     }
     private void OnEnable()
@@ -79,8 +84,6 @@ public class LatPuzzle : MonoBehaviour
     }
     public void Run()
     {
-
-
         Complex Zin = SolveZin(frequency * Mathf.Pow(10, powOfFrequency), phaseVelocityFactor, c, Mathf.Pow(10, powOfCableLength) * CableLength);
         float diffRe = Mathf.Abs((float)(Zin.Real - ZinAnsRe));
         float diffIm = Mathf.Abs((float)(Zin.Imaginary - ZinAnsIm));
@@ -88,10 +91,9 @@ public class LatPuzzle : MonoBehaviour
         print(diffIm);
         if (diffRe <= diffWanted && diffIm <= diffWanted)
         {
-            print("true");
+            WinPanel.SetActive(true);
             test1Check.SetActive(true);
         }
         else { print("false" + "\ndiffRe= " + diffRe.ToString("F2") + "\ndiffIm= " + diffIm.ToString("F2")); }
-
     }
 }

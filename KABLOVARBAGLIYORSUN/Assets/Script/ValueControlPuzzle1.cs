@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -18,7 +17,9 @@ public class ValueControlPuzzle1 : MonoBehaviour
     public float powOfL, powOfC, powOfG, powOfR, powOfFrequency;
     public gameManager gameManager;
     [Header("Devre objeleri")]
+    [SerializeField] Color TextColor;
     public TextMeshProUGUI Z0Text;
+    public GameObject[] devicetexts;
     public TMP_InputField InputFieldR, InputFieldG, InputFieldC, InputFieldL;
     public Slider LSlider, CSlider, GSlider, RSlider;
     [Header("Cevaplar")]
@@ -46,13 +47,17 @@ public class ValueControlPuzzle1 : MonoBehaviour
                 }
                 else
                 {
-                   GSlider = DevicePlaces[i].transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Slider>();
-                   DevicePlaces[i].transform.GetChild(0).GetChild(2).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "G'";
-                   InputFieldG = DevicePlaces[i].transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_InputField>();
+                    GSlider = DevicePlaces[i].transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Slider>();
+                    DevicePlaces[i].transform.GetChild(0).GetChild(2).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "G'";
+                    InputFieldG = DevicePlaces[i].transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_InputField>();
                 }
             }
         }
-
+        for (int i = 0; i < devicetexts.Length; i++)
+        {
+            devicetexts[i].SetActive(true);
+            devicetexts[i].GetComponent<TextMeshProUGUI>().color = TextColor;
+        }
 
     }
     public void SliderValueChanged()
@@ -93,8 +98,10 @@ public class ValueControlPuzzle1 : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             notePages[i].SetActive(false);
-            //noteButton[i].SetActive(false);
+            RectTransform ttransform = noteButton[i].GetComponent<RectTransform>();
+            ttransform.position = new UnityEngine.Vector3(ttransform.position.x, 900, ttransform.position.z);
         }
+        noteButton[a].GetComponent<RectTransform>().position = new UnityEngine.Vector3(noteButton[a].GetComponent<RectTransform>().position.x, 915, noteButton[a].GetComponent<RectTransform>().position.z);
         notePages[a].SetActive(true);
     }
     public void ControlItsTrueOrNot()
