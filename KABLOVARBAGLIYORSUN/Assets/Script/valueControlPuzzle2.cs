@@ -1,4 +1,4 @@
-using System.Numerics;
+ï»¿using System.Numerics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,7 +27,8 @@ public class valueControlPuzzle2 : MonoBehaviour
     [Header("Cevap Parametreleri")]
     public double diffWanted;
     public double AnsMagnitude, AnsPhase;
-    
+    [Header("Checkmarklar")]
+    public GameObject task1check;
 
     private void OnEnable()
     {
@@ -61,9 +62,9 @@ public class valueControlPuzzle2 : MonoBehaviour
         Complex Z0Complex = new Complex(Z0.Real, 0);
         Complex Gamma = (ZL - Z0Complex) / (ZL + Z0Complex);
 
-        // Büyüklük ve faz açýsý
+        // BÃ¼yÃ¼klÃ¼k ve faz aÃ§Ä±sÄ±
         double magnitude = Gamma.Magnitude;
-        double phase = Gamma.Phase * (180 / Mathf.PI);  // Radyan cinsinden dereceye çevirme
+        double phase = Gamma.Phase * (180 / Mathf.PI);  // Radyan cinsinden dereceye Ã§evirme
         return (magnitude, phase);
     }
     public Complex SolveZL(double RL,double CL,double frequency)
@@ -79,8 +80,8 @@ public class valueControlPuzzle2 : MonoBehaviour
         double Hzfrequency = frequency * Mathf.Pow(10, powofFrequency);
 
         (Magnitude, Phase) = SolveReflectionCoefficient(RL * Mathf.Pow(10, powofRL), CL * Mathf.Pow(10, powofCL), Z0, frequency * Mathf.Pow(10, powofFrequency));
-        MagnitudeText.text = "|r|= " + Magnitude.ToString("F2");
-        PhaseText.text = "Angle= " + Phase.ToString("F2");
+        MagnitudeText.text = "|Î“|= " + Magnitude.ToString("F2");
+        PhaseText.text = "Î¸<voffset=-0.3em>r</voffset>= " + Phase.ToString("F2");
     }
     public void InputValueChanged()
     {
@@ -91,8 +92,8 @@ public class valueControlPuzzle2 : MonoBehaviour
         double Hzfrequency = frequency * Mathf.Pow(10, powofFrequency);
 
         (Magnitude, Phase) = SolveReflectionCoefficient(RL*Mathf.Pow(10, powofRL),CL*Mathf.Pow(10, powofCL), Z0,frequency* Mathf.Pow(10, powofFrequency));
-        MagnitudeText.text = "|r|= " + Magnitude.ToString("F2");
-        PhaseText.text = "Angle= " + Phase.ToString("F2");
+        MagnitudeText.text = "|Î“|= " + Magnitude.ToString("F2");
+        PhaseText.text = "Î¸<voffset=-0.3em>r</voffset>= " + Phase.ToString("F2");
     }
 
     public void Run()
@@ -103,6 +104,7 @@ public class valueControlPuzzle2 : MonoBehaviour
         if (Mathf.Abs(diffphase) <= diffWanted && Mathf.Abs(diffmagnitude) <= diffWanted)
         {
             print("true");  GameManager.puzzNum = 3; GameManager.CloseBtnPressed();
+            task1check.SetActive(true);
         }
         else { print("false" + "\ndiffphase= " + diffphase.ToString("F2") + "\ndiffmagnitude= " + diffmagnitude.ToString("F2")); }
 

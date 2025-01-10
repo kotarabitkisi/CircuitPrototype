@@ -8,6 +8,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
 {
     public GameObject glowingSquare;
     public GameObject[] notePages;
+    public GameObject[] noteButton;
     [Header("Devre deðerleri ve üsleri")]
     public Complex Z0;
     public double Z0Re, Z0Im;
@@ -25,8 +26,8 @@ public class ValueControlPuzzle1 : MonoBehaviour
     public float AnsR, AnsG, AnsL, AnsC, AnsZ0;
     public bool[] ControlAns;//0:R 1:G 2:L 3:C 4:Z0
     [Header("Checkmarklar")]
-    public GameObject Z0check;
     public GameObject DevicePlacingCheck;
+    public GameObject Z0check;
 
     public void InitializeSliders(GameObject[] Devices, GameObject[] DevicePlaces)//düzenlenecek
     {
@@ -66,7 +67,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
         InputFieldC.text = C.ToString("F2");
         float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
         Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
-        Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
+        Z0Text.text = " Z<voffset=-0.3em>0</voffset>= " + Z0.Real.ToString("F2");
         Z0Re = Z0.Real;
         Z0Im = Z0.Imaginary;
     }
@@ -83,7 +84,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
 
         float Hzfrequency = Frequency * Mathf.Pow(10, powOfFrequency);
         Complex Z0 = SolveZ0(G * Mathf.Pow(10, powOfG), C * Mathf.Pow(10, powOfC), L * Mathf.Pow(10, powOfL), R * Mathf.Pow(10, powOfR), Hzfrequency);
-        Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
+        Z0Text.text = " Z<voffset=-0.3em>0</voffset>= " + Z0.Real.ToString("F2");
         Z0Re = Z0.Real;
         Z0Im = Z0.Imaginary;
     }
@@ -92,6 +93,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             notePages[i].SetActive(false);
+            //noteButton[i].SetActive(false);
         }
         notePages[a].SetActive(true);
     }
@@ -105,7 +107,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
         bool istrueC = diffC <= diffWanted;
         bool istrueL = diffL <= diffWanted;
         bool istrueZ0 = diffZ0.Real <= diffWanted && diffZ0.Imaginary <= diffWanted;
-        Z0Text.text = "Z0= " + Z0.Real.ToString("F2");
+        Z0Text.text = " Z<voffset=-0.3em>0</voffset>= " + Z0.Real.ToString("F2");
         if ((istrueC || !ControlAns[3]) && (istrueL || !ControlAns[2]) && (istrueZ0 || !ControlAns[4])) { Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); gameManager.p1SolvingSolved = true; gameManager.puzzNum = 2; gameManager.CloseBtnPressed(); }
         else { print("Z0diff= " + diffZ0 + "\n Ldiff= " + diffL + "\nCdiff = " + diffC); }
     }

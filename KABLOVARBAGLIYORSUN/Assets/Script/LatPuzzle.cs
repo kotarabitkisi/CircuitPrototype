@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LatPuzzle : MonoBehaviour
 {
+    public GameObject[] notePages;
     public Complex ZL, Z0;
     public float Multiple, offset, Ycoor;
     public GameObject Left, Right;
@@ -23,6 +24,17 @@ public class LatPuzzle : MonoBehaviour
     [Header("Cevap Parametreleri")]
     public float diffWanted;
     public double ZinAnsRe, ZinAnsIm;
+    [Header("Checkmarklar")]
+    public GameObject test1Check;
+
+    public void OpenNote(int a)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            notePages[i].SetActive(false);
+        }
+        notePages[a].SetActive(true);
+    }
     private void OnEnable()
     {
         Z0=VCP2.Z0;
@@ -77,6 +89,7 @@ public class LatPuzzle : MonoBehaviour
         if (diffRe <= diffWanted && diffIm <= diffWanted)
         {
             print("true");
+            test1Check.SetActive(true);
         }
         else { print("false" + "\ndiffRe= " + diffRe.ToString("F2") + "\ndiffIm= " + diffIm.ToString("F2")); }
 
