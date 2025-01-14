@@ -259,19 +259,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ekibimiz
-
-'
+  m_text: "EK\u0130B\u0130M\u0130Z\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a2cf2b8844904a946894e6af81fdc4b2, type: 2}
-  m_sharedMaterial: {fileID: -5945867452482462478, guid: a2cf2b8844904a946894e6af81fdc4b2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7204dae3fdae36442963a572fa5d605a, type: 2}
+  m_sharedMaterial: {fileID: 942850007238424730, guid: 7204dae3fdae36442963a572fa5d605a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4284632897
+  m_fontColor: {r: 0.25490198, g: 0.30980393, b: 0.38431376, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -288,8 +286,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 73.4
-  m_fontSizeBase: 73.4
+  m_fontSize: 130
+  m_fontSizeBase: 130
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1531,7 +1529,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -86.26767}
+  m_AnchoredPosition: {x: 0, y: -170.26767}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1323255203
@@ -1796,8 +1794,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 90}
-  m_SizeDelta: {x: 1319.9789, y: 103.759}
+  m_AnchoredPosition: {x: 6.6798, y: 6}
+  m_SizeDelta: {x: 1333.3385, y: 451.394}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1545191852
 MonoBehaviour:
@@ -1819,15 +1817,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-    glhm
-
-    fbhkmgfknm
-
-    gknlmgk
-
-    mbgklml'
+  m_text: "Emrecan Korkmaz- Yaz\u0131l\u0131mc\u0131\nHilal Korkusuz- Proje Y\xF6neticisi\n\u0130clal-
+    Baydur- Sanat\xE7\u0131\n\xD6mer Faruk Bravo- Game Designer"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2cf2b8844904a946894e6af81fdc4b2, type: 2}
   m_sharedMaterial: {fileID: -5945867452482462478, guid: a2cf2b8844904a946894e6af81fdc4b2, type: 2}
@@ -1961,17 +1952,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "DERS\u0130NOYUN - M\u0130KRODALGA DEVRE"
+  m_text: "DERS\u0130NOYUN \nM\u0130KRODALGA DEVRE"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7204dae3fdae36442963a572fa5d605a, type: 2}
+  m_sharedMaterial: {fileID: 942850007238424730, guid: 7204dae3fdae36442963a572fa5d605a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4284632897
+  m_fontColor: {r: 0.25490198, g: 0.30980393, b: 0.38431376, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1994,7 +1985,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2024,7 +2015,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: -81.31494, z: 0, w: -42.16339}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2074,7 +2065,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -205}
+  m_AnchoredPosition: {x: 0, y: -289}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794947129
@@ -2286,7 +2277,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 38}
+  m_AnchoredPosition: {x: 0, y: -46}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1906923927
