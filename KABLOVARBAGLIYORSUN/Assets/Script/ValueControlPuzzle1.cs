@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ValueControlPuzzle1 : MonoBehaviour
 {
+    public gameManager gameManager;
+    public SoundManager SoundManager;
     public GameObject glowingSquare;
     public GameObject[] notePages;
     public GameObject[] noteButton;
@@ -15,7 +17,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
     public float L, C;
     public float Beta, Frequency;
     public float powOfL, powOfC, powOfG, powOfR, powOfFrequency;
-    public gameManager gameManager;
+    
     [Header("Devre objeleri")]
     [SerializeField] Color TextColor;
     public TextMeshProUGUI Z0Text;
@@ -103,6 +105,7 @@ public class ValueControlPuzzle1 : MonoBehaviour
         }
         noteButton[a].GetComponent<RectTransform>().position = new UnityEngine.Vector3(noteButton[a].GetComponent<RectTransform>().position.x, 915, noteButton[a].GetComponent<RectTransform>().position.z);
         notePages[a].SetActive(true);
+        SoundManager.Playsound(3);
     }
     public void ControlItsTrueOrNot()
     {
@@ -115,8 +118,9 @@ public class ValueControlPuzzle1 : MonoBehaviour
         bool istrueL = diffL <= diffWanted;
         bool istrueZ0 = diffZ0.Real <= diffWanted && diffZ0.Imaginary <= diffWanted;
         Z0Text.text = " Z<voffset=-0.3em>0</voffset>= " + Z0.Real.ToString("F2");
-        if ((istrueC || !ControlAns[3]) && (istrueL || !ControlAns[2]) && (istrueZ0 || !ControlAns[4])) { Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); gameManager.p1SolvingSolved = true; gameManager.puzzNum = 2; gameManager.CloseBtnPressed(); }
-        else { print("Z0diff= " + diffZ0 + "\n Ldiff= " + diffL + "\nCdiff = " + diffC); }
+        print("Value");
+        if ((istrueC || !ControlAns[3]) && (istrueL || !ControlAns[2]) && (istrueZ0 || !ControlAns[4])) { SoundManager.Playsound(1); Z0check.SetActive(true); print("Z0diff= " + diffZ0 + "true \n Ldiff=" + diffL + "\nCdiff = " + diffC); gameManager.p1SolvingSolved = true; gameManager.puzzNum = 2; gameManager.CloseBtnPressed(); }
+        else { print("Z0diff= " + diffZ0 + "\n Ldiff= " + diffL + "\nCdiff = " + diffC); SoundManager.Playsound(0); }
     }
     public Complex SolveZ0(float G, float C, float L, float R, float frequency)
     {

@@ -6,6 +6,7 @@ public class ButtonControl : MonoBehaviour
     public GameObject[] AllObjects;
     public void StartButton()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(1);
     }
     public void ExitButton()

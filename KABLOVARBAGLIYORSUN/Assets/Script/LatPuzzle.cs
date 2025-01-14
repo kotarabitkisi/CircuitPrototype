@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LatPuzzle : MonoBehaviour
 {
+    public SoundManager SoundManager;
     public GameObject[] notePages;
     public GameObject[] noteButton;
     public Complex ZL, Z0;
@@ -39,6 +40,7 @@ public class LatPuzzle : MonoBehaviour
         }
         noteButton[a].GetComponent<RectTransform>().position = new UnityEngine.Vector3(noteButton[a].GetComponent<RectTransform>().position.x, 915, noteButton[a].GetComponent<RectTransform>().position.z);
         notePages[a].SetActive(true);
+        SoundManager.Playsound(3);
     }
     private void OnEnable()
     {
@@ -87,13 +89,13 @@ public class LatPuzzle : MonoBehaviour
         Complex Zin = SolveZin(frequency * Mathf.Pow(10, powOfFrequency), phaseVelocityFactor, c, Mathf.Pow(10, powOfCableLength) * CableLength);
         float diffRe = Mathf.Abs((float)(Zin.Real - ZinAnsRe));
         float diffIm = Mathf.Abs((float)(Zin.Imaginary - ZinAnsIm));
-        print(diffRe);
-        print(diffIm);
         if (diffRe <= diffWanted && diffIm <= diffWanted)
         {
+            SoundManager.source.enabled = false;
+            Time.timeScale = 0;
             WinPanel.SetActive(true);
             test1Check.SetActive(true);
         }
-        else { print("false" + "\ndiffRe= " + diffRe.ToString("F2") + "\ndiffIm= " + diffIm.ToString("F2")); }
+        else { print("false" + "\ndiffRe= " + diffRe.ToString("F2") + "\ndiffIm= " + diffIm.ToString("F2")); SoundManager.Playsound(0); }
     }
 }

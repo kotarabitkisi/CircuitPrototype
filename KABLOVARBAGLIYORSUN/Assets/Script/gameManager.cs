@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
+    public SoundManager SoundManager;
+    public bool soundPlayed;
+    public bool Finished;
+    public bool Animating;
     public GameObject[] AllFormulaPages;
     public GameObject LosePanel;
     public float leftTime;
@@ -30,8 +34,52 @@ public class gameManager : MonoBehaviour
             Invoke("LastPuzzleStart", 2);
         }
         #region süredeðiþimi
-        if (leftTime <= 0) { Timetxt.text = "0"; Lose(); }
-        else { leftTime -= Time.deltaTime; Timetxt.text = leftTime.ToString("0"); }
+        if (!soundPlayed && leftTime <= 10)
+        {
+            SoundManager.Playsound(2);
+            soundPlayed = true;
+        }
+
+
+        if (leftTime <= 0)
+        {
+            Timetxt.text = "0";
+
+            if (!Finished) { Finished = true; Lose(); }
+        }
+
+        else
+        {
+            leftTime -= Time.deltaTime;
+
+            if (leftTime < 60)
+            {
+                Timetxt.text = leftTime.ToString("0");
+
+            }
+            else
+            {
+                int minute = (int)leftTime / 60;
+                int second = (int)leftTime % 60;
+                string secondtxt, minutetxt;
+                if (minute < 10)
+                {
+                    minutetxt = "0" + minute.ToString("0");
+                }
+                else { minutetxt = minute.ToString("0"); }
+                if (second < 10)
+                {
+                    secondtxt = "0" + second.ToString("0");
+                }
+                else { secondtxt = second.ToString("0"); }
+                Timetxt.text = minutetxt + ":" + secondtxt;
+
+
+            }
+
+
+
+        }
         #endregion
         #region yeþilkareyetýklamakontrolü
         if (Input.GetMouseButtonDown(0))
@@ -69,6 +117,8 @@ public class gameManager : MonoBehaviour
     }
     public void Lose()
     {
+        Time.timeScale = 0;
+        SoundManager.source.enabled = false;
         LosePanel.SetActive(true);
     }
     public void LastPuzzleStart()
@@ -78,147 +128,155 @@ public class gameManager : MonoBehaviour
     }
     public IEnumerator OpenPage(int id)
     {
-        for (int i = 0; i < squares.Length; i++)
+        if (!Animating)
         {
-            squares[i].GetComponent<colorChanging>().enabled = false;
-        }
-        #region seçilen sayfanýn childlarýndaki SpriteRendererlara eriþme(varsa)
-        List<GameObject> pagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(pages[id].transform, pagesChild);
-        List<SpriteRenderer> pagesRenderer = new List<SpriteRenderer>();
-        List<Image> pagesImage = new List<Image>();
-        List<TextMeshProUGUI> pagesText = new List<TextMeshProUGUI>();
-        for (int i = 0; i < pagesChild.Count; i++)
-        {
-            if (pagesChild[i].TryGetComponent(out SpriteRenderer c))
+            Animating = true;
+            for (int i = 0; i < squares.Length; i++)
             {
-                pagesRenderer.Add(c);
+                squares[i].GetComponent<colorChanging>().enabled = false;
             }
-            if (pagesChild[i].TryGetComponent(out TextMeshProUGUI d))
+            #region seçilen sayfanýn childlarýndaki SpriteRendererlara eriþme(varsa)
+            List<GameObject> pagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(pages[id].transform, pagesChild);
+            List<SpriteRenderer> pagesRenderer = new List<SpriteRenderer>();
+            List<Image> pagesImage = new List<Image>();
+            List<TextMeshProUGUI> pagesText = new List<TextMeshProUGUI>();
+            for (int i = 0; i < pagesChild.Count; i++)
             {
-                pagesText.Add(d);
+                if (pagesChild[i].TryGetComponent(out SpriteRenderer c))
+                {
+                    pagesRenderer.Add(c);
+                }
+                if (pagesChild[i].TryGetComponent(out TextMeshProUGUI d))
+                {
+                    pagesText.Add(d);
+                }
+                if (pagesChild[i].TryGetComponent(out Image e))
+                {
+                    pagesImage.Add(e);
+                }
             }
-            if (pagesChild[i].TryGetComponent(out Image e))
+            List<GameObject> openedPagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(OpenedPage.transform, openedPagesChild);
+            List<SpriteRenderer> openedPagesRenderer = new List<SpriteRenderer>();
+            List<Image> openedPagesImage = new List<Image>();
+            List<TextMeshProUGUI> openedPagesText = new List<TextMeshProUGUI>();
+            for (int i = 0; i < openedPagesChild.Count; i++)
             {
-                pagesImage.Add(e);
+                if (openedPagesChild[i].TryGetComponent(out SpriteRenderer d))
+                {
+                    openedPagesRenderer.Add(d);
+                }
+                else if (openedPagesChild[i].TryGetComponent(out TextMeshProUGUI e))
+                {
+                    openedPagesText.Add(e);
+                }
+                else if (openedPagesChild[i].TryGetComponent(out Image f))
+                {
+                    openedPagesImage.Add(f);
+                }
             }
-        }
-        List<GameObject> openedPagesChild = new List<GameObject>(); GetAllChildObjectsRecursively(OpenedPage.transform, openedPagesChild);
-        List<SpriteRenderer> openedPagesRenderer = new List<SpriteRenderer>();
-        List<Image> openedPagesImage = new List<Image>();
-        List<TextMeshProUGUI> openedPagesText = new List<TextMeshProUGUI>();
-        for (int i = 0; i < openedPagesChild.Count; i++)
-        {
-            if (openedPagesChild[i].TryGetComponent(out SpriteRenderer d))
+            #endregion
+            #region objelerinrenginideðiþtirme
+            pages[id].SetActive(true);
+
+
+            if (OpenedPage.TryGetComponent(out SpriteRenderer a))
             {
-                openedPagesRenderer.Add(d);
+                openedPagesRenderer.Add(a);
             }
-            else if (openedPagesChild[i].TryGetComponent(out TextMeshProUGUI e))
+            if (pages[id].TryGetComponent(out SpriteRenderer b))
             {
-                openedPagesText.Add(e);
+                pagesRenderer.Add(b);
             }
-            else if (openedPagesChild[i].TryGetComponent(out Image f))
+
+
+            float duration = 1f; // 1 saniye
+            float elapsed = 0f;
+
+            while (elapsed < duration)
             {
-                openedPagesImage.Add(f);
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration; // Ýlerleme yüzdesi
+
+                for (int j = 0; j < pagesRenderer.Count; j++)
+                    pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, t);
+
+                for (int j = 0; j < openedPagesRenderer.Count; j++)
+                    openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, t);
+
+                for (int j = 0; j < pagesImage.Count; j++)
+                    pagesImage[j].color = Color.Lerp(noneColor, Color.white, t);
+
+                for (int j = 0; j < openedPagesImage.Count; j++)
+                    openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, t);
+
+                for (int j = 0; j < pagesText.Count; j++)
+                    pagesText[j].color = Color.Lerp(noneColor, Color.black, t);
+
+                for (int j = 0; j < openedPagesText.Count; j++)
+                    openedPagesText[j].color = Color.Lerp(Color.black, noneColor, t);
+
+                yield return null; // Bir sonraki kareyi bekle
             }
+
+
+            //for (float i = 0; i < 101; i++)
+            //{
+
+            //    for (int j = 0; j < pagesRenderer.Count; j++)
+            //    {
+            //        pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, i / 100);
+            //    }
+            //    for (int j = 0; j < openedPagesRenderer.Count; j++)
+            //    {
+            //        openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, i / 100);
+            //    }
+            //    for (int j = 0; j < pagesImage.Count; j++)
+            //    {
+            //        pagesImage[j].color = Color.Lerp(noneColor, Color.white, i / 100);
+            //    }
+            //    for (int j = 0; j < openedPagesImage.Count; j++)
+            //    {
+            //        openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, i / 100);
+            //    }
+            //    for (int j = 0; j < pagesText.Count; j++)
+            //    {
+            //        pagesText[j].color = Color.Lerp(noneColor, Color.black, i / 100);
+            //    }
+            //    for (int j = 0; j < openedPagesText.Count; j++)
+            //    {
+            //        openedPagesText[j].color = Color.Lerp(Color.black, noneColor, i / 100);
+            //    }
+            //    yield return new WaitForSecondsRealtime(0.01f);
+            //}
+            for (int i = 0; i < squares.Length; i++)
+            {
+                squares[i].GetComponent<colorChanging>().enabled = true;
+            }
+            #endregion
+            OpenedPage.SetActive(false);
+            OpenedPage = pages[id];
+            for (int i = 0; i < squares.Length; i++)
+            {
+                squares[i].SetActive(i == puzzNum - 1 && id == 0);
+            }
+            Animating = false;
         }
-        #endregion
-        #region objelerinrenginideðiþtirme
-        pages[id].SetActive(true);
 
-
-        if (OpenedPage.TryGetComponent(out SpriteRenderer a))
-        {
-            openedPagesRenderer.Add(a);
-        }
-        if (pages[id].TryGetComponent(out SpriteRenderer b))
-        {
-            pagesRenderer.Add(b);
-        }
-
-
-        float duration = 1f; // 1 saniye
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration; // Ýlerleme yüzdesi
-
-            for (int j = 0; j < pagesRenderer.Count; j++)
-                pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, t);
-
-            for (int j = 0; j < openedPagesRenderer.Count; j++)
-                openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, t);
-
-            for (int j = 0; j < pagesImage.Count; j++)
-                pagesImage[j].color = Color.Lerp(noneColor, Color.white, t);
-
-            for (int j = 0; j < openedPagesImage.Count; j++)
-                openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, t);
-
-            for (int j = 0; j < pagesText.Count; j++)
-                pagesText[j].color = Color.Lerp(noneColor, Color.black, t);
-
-            for (int j = 0; j < openedPagesText.Count; j++)
-                openedPagesText[j].color = Color.Lerp(Color.black, noneColor, t);
-
-            yield return null; // Bir sonraki kareyi bekle
-        }
-
-
-        //for (float i = 0; i < 101; i++)
-        //{
-
-        //    for (int j = 0; j < pagesRenderer.Count; j++)
-        //    {
-        //        pagesRenderer[j].color = Color.Lerp(noneColor, Color.white, i / 100);
-        //    }
-        //    for (int j = 0; j < openedPagesRenderer.Count; j++)
-        //    {
-        //        openedPagesRenderer[j].color = Color.Lerp(Color.white, noneColor, i / 100);
-        //    }
-        //    for (int j = 0; j < pagesImage.Count; j++)
-        //    {
-        //        pagesImage[j].color = Color.Lerp(noneColor, Color.white, i / 100);
-        //    }
-        //    for (int j = 0; j < openedPagesImage.Count; j++)
-        //    {
-        //        openedPagesImage[j].color = Color.Lerp(Color.white, noneColor, i / 100);
-        //    }
-        //    for (int j = 0; j < pagesText.Count; j++)
-        //    {
-        //        pagesText[j].color = Color.Lerp(noneColor, Color.black, i / 100);
-        //    }
-        //    for (int j = 0; j < openedPagesText.Count; j++)
-        //    {
-        //        openedPagesText[j].color = Color.Lerp(Color.black, noneColor, i / 100);
-        //    }
-        //    yield return new WaitForSecondsRealtime(0.01f);
-        //}
-        for (int i = 0; i < squares.Length; i++)
-        {
-            squares[i].GetComponent<colorChanging>().enabled = true;
-        }
-        #endregion
-        OpenedPage.SetActive(false);
-        OpenedPage = pages[id];
-        for (int i = 0; i < squares.Length; i++)
-        {
-            squares[i].SetActive(i == puzzNum - 1 && id == 0);
-        }
 
     }
     public IEnumerator MoveCamera(float cameraScale, Vector3 pos)//kamerayý verilen koordinat ve scale haline getirme animasyonu
     {
-
-        Camera camera = Camera.main;
-        float firstScale = camera.orthographicSize;
-
-        camera.transform.DOMove(pos, 1).SetEase(Ease.Linear);
-        for (float i = 0; i < 100; i++)
+        if (!Animating)
         {
-            camera.orthographicSize = Mathf.Lerp(firstScale, cameraScale, i / 100);
-            yield return new WaitForSecondsRealtime(0.01f);
+            Camera camera = Camera.main;
+            float firstScale = camera.orthographicSize;
+
+            camera.transform.DOMove(pos, 1).SetEase(Ease.Linear);
+            for (float i = 0; i < 100; i++)
+            {
+                camera.orthographicSize = Mathf.Lerp(firstScale, cameraScale, i / 100);
+                yield return new WaitForSecondsRealtime(0.01f);
+            }
         }
 
     }

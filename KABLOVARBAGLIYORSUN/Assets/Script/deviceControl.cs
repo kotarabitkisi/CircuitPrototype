@@ -15,6 +15,7 @@ public class deviceControl : MonoBehaviour
     public GameObject[] devices;
     public GameObject[] selectedDevicePlaces;
     public Vector3[] DeviceTransforms;
+    public SoundManager SoundManager;
     private void Start()
     {
         for (int i = 0; i < devices.Length; i++) { DeviceTransforms[i] = devices[i].transform.localPosition; }
@@ -108,11 +109,13 @@ public class deviceControl : MonoBehaviour
     }
     public void ControlDevicesArePuttedCorrectly()//doðru eþleþmelerin elemanlarýnýn ayný indexte olmasý önemli :( 
     {
+        if (GM.p1PlacingSolved) { return; }
         for (int i = 0; i < selectedDevicePlaces.Length; i++)
         {
             if (selectedDevicePlaces[i].transform.childCount == 0)//önce bütün aygýtlarýn yerleþtirildiðini kontrol ediyor
             {
-                print("false");
+                
+                SoundManager.Playsound(0);
                 for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
                 {
                     devices[j].transform.parent = transform;
@@ -126,11 +129,12 @@ public class deviceControl : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             deviceplaceschild.Add(selectedDevicePlaces[i].transform.GetChild(0).gameObject);
-            print(deviceplaceschild[i]);
+            
         }
         if (!(devices[1] == deviceplaceschild[1]|| devices[1] == deviceplaceschild[0]) || !(devices[3] == deviceplaceschild[2] || devices[3] == deviceplaceschild[3]))
         {
-            print("false");
+            
+            SoundManager.Playsound(0);
             for (int j = 0; j < devices.Length; j++)//eðer yanlýþlýk varsa aygýtlarý yerlerine geri koyup baþtan baþlatýyor
             {
                 devices[j].transform.parent = transform;
@@ -145,8 +149,8 @@ public class deviceControl : MonoBehaviour
             //buraya sliderlarý aktif etme satýrý gerek
             devices[i].GetComponent<BoxCollider2D>().enabled = false;
         }
-        ControlBtn.GetComponent<Button>().onClick.RemoveAllListeners();
-        ControlBtn.GetComponent<Button>().onClick.AddListener(() => VCP.ControlItsTrueOrNot());
+        ControlBtn.onClick.RemoveAllListeners();
+        ControlBtn.onClick.AddListener(() => VCP.ControlItsTrueOrNot());
         for (int i = 0; i < selectedDevicePlaces.Length; i++)
         {
             selectedDevicePlaces[i].GetComponent<BoxCollider2D>().enabled = false;
@@ -157,7 +161,8 @@ public class deviceControl : MonoBehaviour
         }
         GM.p1PlacingSolved = true;
         VCP.DevicePlacingCheck.SetActive(true);
-        print("true");//for döngülerini birleþtirme hepsinin sýrasý önemli
+        print("Device");
+        SoundManager.Playsound(1);
         VCP.InitializeSliders(devices, selectedDevicePlaces);
     }
 

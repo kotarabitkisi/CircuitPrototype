@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class valueControlPuzzle2 : MonoBehaviour
 {
-
+    public SoundManager SoundManager;
     public gameManager GameManager;
     public ValueControlPuzzle1 VCP;
     [Header("GameObjects")]
@@ -106,8 +106,9 @@ public class valueControlPuzzle2 : MonoBehaviour
         {
             print("true");  GameManager.puzzNum = 3; GameManager.CloseBtnPressed();
             task1check.SetActive(true);
+            SoundManager.Playsound(1);
         }
-        else { print("false" + "\ndiffphase= " + diffphase.ToString("F2") + "\ndiffmagnitude= " + diffmagnitude.ToString("F2")); }
+        else { print("false" + "\ndiffphase= " + diffphase.ToString("F2") + "\ndiffmagnitude= " + diffmagnitude.ToString("F2")); SoundManager.Playsound(0); }
 
     }
     public void OpenNote(int a)
@@ -120,5 +121,6 @@ public class valueControlPuzzle2 : MonoBehaviour
         }
         noteButton[a].GetComponent<RectTransform>().position = new UnityEngine.Vector3(noteButton[a].GetComponent<RectTransform>().position.x, 915, noteButton[a].GetComponent<RectTransform>().position.z);
         notePages[a].SetActive(true);
+        SoundManager.Playsound(3);
     }
 }
